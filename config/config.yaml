@@ -1,11 +1,11 @@
+# Currently these settings do nothing
 settings:
-  verbose: true
+  verbose: false
   remove_existing_files: false
 
+
 generators:
-- name: "assignment template"
-  identifier: "latexassingment"
-  filename: "assignment.tex"
-- name: "c source file"
-  identifier: "cfile"
-  filename: "main.c"
+# Example entry:
+# - name: "c source file"
+#   identifier: "cfile"
+#   filename: "main.c"

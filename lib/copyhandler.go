@@ -1,4 +1,4 @@
-package main
+package gogenlib
 
 import (
 	"bufio"
@@ -17,7 +17,6 @@ func IdentifyGenerator(identifier string) Generators {
 			configFound = true
 		}
 	}
-
 	if !configFound {
 		fmt.Println("Could not find a definition for given template identifier")
 		os.Exit(3)

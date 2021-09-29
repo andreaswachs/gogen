@@ -1,4 +1,4 @@
-package main
+package gogenlib
 
 import (
 	"fmt"
@@ -161,7 +161,7 @@ func downloadTemplateConfigFile() []byte {
 		os.Exit(1)
 	}
 
-	resp, err := http.Get("https://raw.githubusercontent.com/andreaswachs/gogen/main/config.yaml")
+	resp, err := http.Get("https://raw.githubusercontent.com/andreaswachs/gogen/main/config/config.yaml")
 
 	if err != nil {
 		fmt.Println("Failed to download default config file.")

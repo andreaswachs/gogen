@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"syscall"
 
 	"gopkg.in/yaml.v3"
 )
@@ -42,8 +41,6 @@ func GetConfig() YamlStructure {
 }
 
 func readConfig() []byte {
-	syscall.Umask(0)
-
 	// read the config and return it
 	// if not present, as in first run ever, download it and make the folder paths
 

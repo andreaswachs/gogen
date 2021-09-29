@@ -1,5 +1,19 @@
 package main
 
+import (
+	"fmt"
+)
+
+/*
+ *
+ *
+ *
+ *
+ */
+
 func main() {
-	Greet()
+	config := GetConfig()
+
+	fmt.Println("Heres your config:")
+	fmt.Println(config)
 }

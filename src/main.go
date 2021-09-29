@@ -1,6 +1,7 @@
 package main
 
 import (
+	"andreaswachs/gogenlib"
 	"flag"
 	"strings"
 )
@@ -13,8 +14,7 @@ func main() {
 
 	tail := flag.Args() // We assume that the tail is the identifier
 	identifier := strings.Join(tail, " ")
-
-	EnsureConfigFoldersExists()
-	config := IdentifyGenerator(identifier)
-	GenerateTemplate(config)
+	gogenlib.EnsureConfigFoldersExists()
+	config := gogenlib.IdentifyGenerator(identifier)
+	gogenlib.GenerateTemplate(config)
 }

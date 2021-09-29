@@ -21,8 +21,8 @@ type Generators struct {
 }
 
 type YamlStructure struct {
-	Settings   Settings     `yaml: "settings"`
-	Generators []Generators `yaml: "generators"`
+	Settings   Settings
+	Generators []Generators
 }
 
 func GetConfig() YamlStructure {

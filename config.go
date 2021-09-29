@@ -63,6 +63,14 @@ func readConfig() []byte {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
+		// also create the templates folder, we know it will be missing
+		err = os.MkdirAll(appConfigDir+"/templates", os.ModePerm)
+
+		if err != nil {
+			fmt.Println("An error occured while attempting to create the templates folder inside of the gogen application config folder")
+			os.Exit(6)
+		}
 	}
 
 	// ensure that the config file exists within the app config folder for gogen

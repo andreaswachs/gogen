@@ -4,8 +4,8 @@ settings:
 
 generators:
 - name: assignment template
+  identifier: latexassingment
   filename: assignment.tex
-  parseargs: [$arg1, $arg2, $arg3]
 - name: c source file
+  identifier: cfile
   filename: main.c
-  parseargs: [$arg1, $arg2, $arg3]

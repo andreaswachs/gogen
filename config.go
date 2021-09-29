@@ -15,9 +15,9 @@ type Settings struct {
 }
 
 type Generators struct {
-	Name      string
-	Filename  string
-	ParseArgs []string
+	Name       string
+	Identifier string
+	Filename   string
 }
 
 type YamlStructure struct {

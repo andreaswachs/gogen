@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 /*
  *
  *
@@ -12,8 +8,4 @@ import (
  */
 
 func main() {
-	config := GetConfig()
-
-	fmt.Println("Heres your config:")
-	fmt.Println(config)
 }

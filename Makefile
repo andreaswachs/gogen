@@ -9,15 +9,15 @@ endif
 
 .PHONY: build
 build:
-	cd src && go build && mv gogen ..
+	cd src; go build; mv gogen ..
 
 .PHONY: install
 install:
-	cd src && go install
+	cd src; go install
 
 .PHONY: run
 run:
-	cd src && go run . $(RUN_ARGS)
+	cd src; go run . $(RUN_ARGS)
 
 .PHONY: clean
 clean:

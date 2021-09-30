@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"runtime"
 )
 
 func IdentifyGenerator(identifier string) Generators {
@@ -62,8 +63,15 @@ func GenerateTemplate(config Generators) {
 	scannerIn := bufio.NewScanner(fileIn)
 	scannerIn.Split(bufio.ScanLines)
 
+	var newline string
+	if runtime.GOOS == "windows" {
+		newline = "\r\n"
+	} else {
+		newline = "\n"
+	}
+
 	for scannerIn.Scan() {
-		fileOut.Write([]byte(scannerIn.Text()))
+		fileOut.WriteString(scannerIn.Text() + newline)
 	}
 
 	fileIn.Close()

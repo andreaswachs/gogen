@@ -20,7 +20,7 @@ func IdentifyGenerator(identifier string) Generators {
 	}
 	if !configFound {
 		fmt.Println("Could not find a definition for given template identifier")
-		os.Exit(3)
+		os.Exit(1)
 	}
 
 	return foundGeneratorConfig
@@ -29,36 +29,20 @@ func IdentifyGenerator(identifier string) Generators {
 func GenerateTemplate(config Generators) {
 	cwd, err := os.Getwd()
 
-	if err != nil {
-		fmt.Println("An error occurred while trying to determine the current working directory")
-		fmt.Println("Does the program run in a path that it is not allowed to read?")
-		os.Exit(1)
-	}
+	ExitOnError(err, "An error occurred while trying to determine the current working directory"+
+		"\nDoes the program run in a path that it is not allowed to read?")
 
-	templatesFolderPath, err := GetGogenTemplatesFolderPath()
-
-	if err != nil {
-		fmt.Println("An error occurred while trying to determine the path for the templates folder")
-		fmt.Println("This could be a permissions problem.")
-		os.Exit(1)
-	}
+	templatesFolderPath := GetGogenTemplatesFolderPath()
 
 	fileIn, err := os.Open(templatesFolderPath + "/" + config.Filename)
 
-	if err != nil {
-		fmt.Printf("Could not find template file with filename \"%s\" in the templates folder: %s\n",
+	ExitOnError(err,
+		fmt.Sprintf("Could not find template file with filename \"%s\" in the templates folder: %s\n",
 			config.Filename,
-			templatesFolderPath)
-		os.Exit(1)
-	}
+			templatesFolderPath))
 
 	fileOut, err := os.OpenFile(cwd+"/"+config.Filename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModePerm)
-
-	if err != nil {
-		fmt.Println("Could not open the file to write the template to.")
-		fmt.Printf("Error message: %s\n", err.Error())
-		os.Exit(1)
-	}
+	ExitOnError(err, "Could not open the file to write the template to.")
 
 	scannerIn := bufio.NewScanner(fileIn)
 	scannerIn.Split(bufio.ScanLines)

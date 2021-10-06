@@ -36,7 +36,7 @@ func GetConfig() YamlStructure {
 	settings := YamlStructure{}
 	config := readConfig()
 	err := yaml.Unmarshal([]byte(config), &settings)
-	exitOnError(err, "Something went wrong while trying to read the config yaml file")
+	ExitOnError(err, "Something went wrong while trying to read the config yaml file")
 
 	return settings
 }
@@ -44,7 +44,7 @@ func GetConfig() YamlStructure {
 func GetGogenBasePath() string {
 	dir, err := os.UserConfigDir()
 
-	exitOnError(err, "Could not determine the user config directory.")
+	ExitOnError(err, "Could not determine the user config directory.")
 	return dir + gogenConfigFolderName
 }
 
@@ -87,11 +87,11 @@ func readConfig() []byte {
 	if _, err := os.Stat(appConfigDir); os.IsNotExist(err) {
 
 		err = os.MkdirAll(appConfigDir, os.ModePerm)
-		exitOnError(err, "An error occurred while attempting to create application config folder")
+		ExitOnError(err, "An error occurred while attempting to create application config folder")
 
 		dir := GetGogenTemplatesFolderPath()
 		err = os.MkdirAll(dir, os.ModePerm) // also create the templates folder, we know it will be missing
-		exitOnError(err, "An error occured while attempting to create the templates folder inside of the gogen application config folder")
+		ExitOnError(err, "An error occured while attempting to create the templates folder inside of the gogen application config folder")
 	}
 
 	// ensure that the config file exists within the app config folder for gogen
@@ -104,7 +104,7 @@ func readConfig() []byte {
 
 	config, err := os.ReadFile(configFileComplete)
 
-	exitOnError(err, "Could not read config file from user config directory.\n"+
+	ExitOnError(err, "Could not read config file from user config directory.\n"+
 		"Please see if you have permission to read this file")
 
 	return config
@@ -114,11 +114,11 @@ func downloadTemplateConfigFile() []byte {
 	configFile := GetGogenConfigFilePath()
 
 	resp, err := http.Get("https://raw.githubusercontent.com/andreaswachs/gogen/main/config/config.yaml")
-	exitOnError(err, "Failed to download default config file.")
+	ExitOnError(err, "Failed to download default config file.")
 
 	body, err := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
-	exitOnError(err, "Failed to read the downloaded default config file.")
+	ExitOnError(err, "Failed to read the downloaded default config file.")
 
 	os.WriteFile(configFile, body, os.ModePerm)
 	return body
@@ -127,7 +127,7 @@ func downloadTemplateConfigFile() []byte {
 func ensureNamedFolderExists(name string, path string) bool {
 	if _, err := os.Stat(path); err != nil {
 		err := os.MkdirAll(path, os.ModePerm)
-		exitOnError(err, fmt.Sprintf("Could not create %s folder. This might be an permissions issue.\n", name))
+		ExitOnError(err, fmt.Sprintf("Could not create %s folder. This might be an permissions issue.\n", name))
 
 		return false
 	}
@@ -135,7 +135,7 @@ func ensureNamedFolderExists(name string, path string) bool {
 	return true
 }
 
-func exitOnError(err error, msg string) {
+func ExitOnError(err error, msg string) {
 	if err != nil {
 		fmt.Printf("%s\n", msg)
 		fmt.Printf("Error: %v", err)

@@ -29,20 +29,20 @@ func IdentifyGenerator(identifier string) Generators {
 func GenerateTemplate(config Generators) {
 	cwd, err := os.Getwd()
 
-	ExitOnError(err, "An error occurred while trying to determine the current working directory"+
+	exitOnError(err, "An error occurred while trying to determine the current working directory"+
 		"\nDoes the program run in a path that it is not allowed to read?")
 
 	templatesFolderPath := GetGogenTemplatesFolderPath()
 
 	fileIn, err := os.Open(templatesFolderPath + "/" + config.Filename)
 
-	ExitOnError(err,
+	exitOnError(err,
 		fmt.Sprintf("Could not find template file with filename \"%s\" in the templates folder: %s\n",
 			config.Filename,
 			templatesFolderPath))
 
 	fileOut, err := os.OpenFile(cwd+"/"+config.Filename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModePerm)
-	ExitOnError(err, "Could not open the file to write the template to.")
+	exitOnError(err, "Could not open the file to write the template to.")
 
 	scannerIn := bufio.NewScanner(fileIn)
 	scannerIn.Split(bufio.ScanLines)

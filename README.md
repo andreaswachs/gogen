@@ -49,3 +49,33 @@ make clean
 ```
 
 This removes the binary file that was created with `make build`
+
+## Roadmap
+
+This roadmap shows the different features that I'd like to implement as time goes on
+
+
+### Implement CRUD operations on the template entries
+
+- [ ] List all template entries
+- [ ] Create a new template entry
+- [ ] Edit a template entry
+- [ ] Delete a template entry
+
+Note: this might be a pain in the rear, so I am unsure if this has highest priority.
+
+### Implement nested template files
+
+This allows the user to nest templates such that one can give a series of names to `gogen` such that the user can group together related files
+
+### Implement variables to fill out templates
+
+Implement various `$NAME` variables for the user to use in their template. On top of my head I can think of:
+
+- Todays date
+- OS type (macOS, Linux, Windows)
+- *Perhaps some user defined ones that could be stored in the YAML file*
+
+### Unit tests
+
+We need to write tests for this...

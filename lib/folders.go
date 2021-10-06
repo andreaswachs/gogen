@@ -35,26 +35,18 @@ func GetGogenTemplatesFolderPath() string {
 }
 
 func EnsureConfigFoldersExists() {
-	gogenDir := GetGogenConfigFolderPath()
-
-	if !ensureNamedFolderExists("gogen", gogenDir) {
-		downloadTemplateConfigFile()
-	}
-
-	templatesDir := GetGogenTemplatesFolderPath()
-
-	if !ensureNamedFolderExists("templates", templatesDir) {
-		fmt.Println("The templates folder was just created. The folder is empty. You should put some templates in there!")
-	}
+	ensureNamedFolderExists("gogen", GetGogenConfigFolderPath())
+	ensureNamedFolderExists("templates", GetGogenTemplatesFolderPath())
+	downloadTemplateConfigFile()
 }
 
 func ensureNamedFolderExists(name string, path string) bool {
 	if _, err := os.Stat(path); err != nil {
+		verbosePrint(fmt.Sprintf("Attempting to ensure folder %s exists with compelte path \n%s", name, path))
 		err := os.MkdirAll(path, os.ModePerm)
 		exitOnError(err, fmt.Sprintf("Could not create %s folder. This might be an permissions issue.\n", name))
-
-		return false
 	}
 
+	verbosePrint(fmt.Sprintf("Successfully ensured that the folder with name %s exists. Full path: \n%s", name, path))
 	return true
 }

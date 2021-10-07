@@ -73,6 +73,7 @@ func GenerateTemplate(config Generators, runtimeFlags RuntimeFlags) {
 	for scannerIn.Scan() {
 		fileOut.WriteString(scannerIn.Text() + newline)
 	}
+
 	verbosePrint("Done copying the template file to the desired location")
 	verbosePrint("Closing file buffers... ")
 	fileIn.Close()

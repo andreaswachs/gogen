@@ -6,15 +6,21 @@ import (
 	"strings"
 )
 
+var (
+	verboseMode          *bool  = flag.Bool("verbose", false, "Enable verbose output")
+	verboseModeShorthand *bool  = flag.Bool("v", false, "Enable verbose output")
+	identifier           string = ""
+)
+
 func main() {
-	// verbose flag
-	// verbosePtr := flag.Bool("verbose", false, "Enable/disable verbose output")
-
 	flag.Parse()
+	identifier = strings.Join(flag.Args(), " ")
 
-	tail := flag.Args() // We assume that the tail is the identifier
-	identifier := strings.Join(tail, " ")
 	gogenlib.EnsureConfigFoldersExists()
 	config := gogenlib.IdentifyGenerator(identifier)
-	gogenlib.GenerateTemplate(config)
+	gogenFlags := gogenlib.RuntimeFlags{
+		VerboseMode: *verboseMode || *verboseModeShorthand,
+	}
+
+	gogenlib.GenerateTemplate(config, gogenFlags)
 }

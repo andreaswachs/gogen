@@ -19,25 +19,25 @@ func GetGogenBasePath() string {
 	return dir + gogenConfigFolderName
 }
 
-func GetGogenConfigFolderPath() string {
-	dir := GetGogenBasePath()
-	return dir + gogenConfigFolderName
-}
-
 func GetGogenConfigFilePath() string {
 	dir := GetGogenBasePath()
-	return dir + gogenConfigFolderName + configFileName
+	return dir + configFileName
 }
 
 func GetGogenTemplatesFolderPath() string {
 	dir := GetGogenBasePath()
-	return dir + gogenConfigFolderName + templatesFolderName
+	return dir + templatesFolderName
 }
 
-func EnsureConfigFoldersExists() {
-	ensureNamedFolderExists("gogen", GetGogenConfigFolderPath())
+func EnsureConfigFoldersExists() ([]byte, bool) {
+	if !ensureNamedFolderExists("gogen", GetGogenBasePath()) {
+		// this will run only if the gogen folder had to be created
+		return downloadTemplateConfigFile(), false
+	}
 	ensureNamedFolderExists("templates", GetGogenTemplatesFolderPath())
-	downloadTemplateConfigFile()
+
+	var emptyBytesSlice []byte
+	return emptyBytesSlice, true
 }
 
 func ensureNamedFolderExists(name string, path string) bool {
@@ -45,6 +45,7 @@ func ensureNamedFolderExists(name string, path string) bool {
 		verbosePrint(fmt.Sprintf("Attempting to ensure folder %s exists with compelte path \n%s", name, path))
 		err := os.MkdirAll(path, os.ModePerm)
 		exitOnError(err, fmt.Sprintf("Could not create %s folder. This might be an permissions issue.\n", name))
+		return false
 	}
 
 	verbosePrint(fmt.Sprintf("Successfully ensured that the folder with name %s exists. Full path: \n%s", name, path))

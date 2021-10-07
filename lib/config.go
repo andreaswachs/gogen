@@ -1,7 +1,6 @@
 package gogenlib
 
 import (
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -35,32 +34,13 @@ func GetConfig() YamlStructure {
 }
 
 func readConfig() []byte {
-	// read the config and return it
-	// if not present, as in first run ever, download it and make the folder paths
-	appConfigDir := GetGogenConfigFolderPath()
+	downloadedConfig, existed := EnsureConfigFoldersExists()
+	if !existed {
+		return downloadedConfig
+	}
+
 	configFileComplete := GetGogenConfigFilePath()
-
-	// ensure gogen app config folder exists
-	if _, err := os.Stat(appConfigDir); os.IsNotExist(err) {
-
-		err = os.MkdirAll(appConfigDir, os.ModePerm)
-		exitOnError(err, "An error occurred while attempting to create application config folder")
-
-		dir := GetGogenTemplatesFolderPath()
-		err = os.MkdirAll(dir, os.ModePerm) // also create the templates folder, we know it will be missing
-		exitOnError(err, "An error occured while attempting to create the templates folder inside of the gogen application config folder")
-	}
-
-	// ensure that the config file exists within the app config folder for gogen
-	if _, err := os.Stat(configFileComplete); os.IsNotExist(err) {
-		// download the default configuration
-		fmt.Println("No config file was found locally, will download default config file.")
-
-		return downloadTemplateConfigFile()
-	}
-
 	config, err := os.ReadFile(configFileComplete)
-
 	exitOnError(err, "Could not read config file from user config directory.\n"+
 		"Please see if you have permission to read this file")
 

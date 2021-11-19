@@ -1,9 +1,10 @@
 package main
 
 import (
-	"andreaswachs/gogenlib"
 	"flag"
 	"strings"
+
+	gogenlib "github.com/andreaswachs/gogen/lib"
 )
 
 var (

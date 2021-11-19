@@ -4,32 +4,35 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"runtime"
 )
 
-func IdentifyGenerator(identifier string) Generators {
+func IdentifyGenerator(identifier string) (Generators, []string, error) {
 	config := GetConfig()
 
 	for i := 0; i < len(config.Generators); i++ {
 		generator := config.Generators[i]
 		if generator.Identifier == identifier {
 			verbosePrint(fmt.Sprintf("Recognized valid generator name: %s", identifier))
-			return generator
+
+			var identifiers []string
+			for _, g := range config.Generators {
+				identifiers = append(identifiers, g.Identifier)
+			}
+
+			return generator, identifiers, nil
 		}
 	}
 
 	// The system didn't find a matching identifier, so we'll error out now
-	fmt.Printf("Could not find a definition for given template identifier: %s\n", identifier)
-	fmt.Print("Valid identifiers: ")
+	var validGenerators []string
+
 	separator := ""
 	for i := 0; i < len(config.Generators); i++ {
-		fmt.Printf("%s%s", separator, config.Generators[i].Identifier)
+		validGenerators = append(validGenerators, fmt.Sprintf("%s%s", separator, config.Generators[i].Identifier))
 		separator = ","
 	}
-	fmt.Println()
-	os.Exit(1)
 
-	return Generators{}
+	return Generators{}, validGenerators, fmt.Errorf("could not find template with given identifier")
 }
 
 func GenerateTemplate(config Generators, runtimeFlags RuntimeFlags) {
@@ -60,14 +63,7 @@ func GenerateTemplate(config Generators, runtimeFlags RuntimeFlags) {
 	scannerIn := bufio.NewScanner(fileIn)
 	scannerIn.Split(bufio.ScanLines)
 
-	var newline string
-	if runtime.GOOS == "windows" {
-		verbosePrint("Detected program running on Windows, setting newline with carriage return")
-		newline = "\r\n"
-	} else {
-		verbosePrint("Detected program running on Windows, setting newline without carriage return")
-		newline = "\n"
-	}
+	newline := newlineSymbol()
 
 	verbosePrint("Beginning copying over the template file")
 	for scannerIn.Scan() {

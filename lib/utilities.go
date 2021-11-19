@@ -3,6 +3,7 @@ package gogenlib
 import (
 	"fmt"
 	"os"
+	"runtime"
 )
 
 var (
@@ -20,5 +21,15 @@ func exitOnError(err error, msg string) {
 func verbosePrint(msg string) {
 	if flags.VerboseMode {
 		fmt.Println(msg)
+	}
+}
+
+func newlineSymbol() string {
+	if runtime.GOOS == "windows" {
+		verbosePrint("Detected program running on Windows, setting newline with carriage return")
+		return "\r\n"
+	} else {
+		verbosePrint("Detected program running on Windows, setting newline without carriage return")
+		return "\n"
 	}
 }

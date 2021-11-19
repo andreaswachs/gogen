@@ -1,4 +1,4 @@
-module andreaswachs/gogenlib
+module github.com/andreaswachs/gogen
 
 go 1.17
 

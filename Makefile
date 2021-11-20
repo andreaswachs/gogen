@@ -17,7 +17,7 @@ install:
 
 .PHONY: run
 run:
-	go run ./ $(RUN_ARGS)
+	go run ./src $(RUN_ARGS)
 
 .PHONY: clean
 clean:

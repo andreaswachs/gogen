@@ -9,16 +9,12 @@ endif
 
 .PHONY: build
 build:
-	go build ./src; mv ./src/gogen ..
+	go build ./gogen
 
 .PHONY: install
 install:
-	go install ./src
+	go install ./gogen
 
 .PHONY: run
 run:
-	go run ./src $(RUN_ARGS)
-
-.PHONY: clean
-clean:
-	rm gogen
+	go run ./gogen $(RUN_ARGS)
